@@ -1,0 +1,6 @@
+[
+  { "info": "Cut the Grass", "status": false },
+  { "info": "Clean Room", "status": false },
+  { "info": "Go to Gym", "status": true },
+  { "info": "Make Dinner", "status": false }
+]
