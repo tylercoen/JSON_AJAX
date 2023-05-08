@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn Ajax</title>
+  </head>
+  <body>
+    <h1>Learn Ajax jQuery</h1>
+    <div id="output"></div>
+    <form id="myForm">
+      <input type="text" name="first" value="Lewis" /><br />
+      <input type="text" name="last" value="Hamilton" />
+      <input type="submit" value="submit data" />
+    </form>
+    <button id="clickMe">Click Here</button>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $("#myForm").submit(function (e) {
+        e.preventDefault();
+        var myData = {
+          firstName: $('input[name="first"]').val(),
+          lastName: $('input[name="last"]').val(),
+        };
+        var url = "http://s179017901.onlinehome.us/discoveryvip/";
+        $.ajax({
+          url: url,
+          type: "post",
+          data: myData,
+          success: function (data) {
+            $("h1").html(`${data.firstName} ${data.lastName}`);
+            console.log(data);
+          },
+        });
+        /*$.post(url, myData).done(function (data) {
+          console.log(data);
+        });*/
+      });
+
+      /*
+      function webData() {
+        var url = "https://jsonplaceholder.typicode.com/posts/1";
+        var spacxUrl = "https://api.spacexdata.com/v2/launches";
+        $.get(spacxUrl, output).fail(function () {
+          console.log("error");
+        });
+      }
+
+      function output(data) {
+        console.log(data[13].links.mission_patch);
+        $.each(data, function (k, v) {
+          console.log(k);
+          console.log(v);
+        });
+        $("#output").html(
+          `<h2>${data[13].mission_name}</h2><p>${data[13].details}</p><img src="${data[13].links.mission_patch_small}" alt="mission patch" />`
+        );
+      }*/
+    </script>
+  </body>
+</html>

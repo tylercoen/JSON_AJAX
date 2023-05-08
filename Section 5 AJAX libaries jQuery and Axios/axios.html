@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Learn Ajax</title>
+  </head>
+  <body>
+    <h1>Learn Ajax jQuery</h1>
+    <div id="output"></div>
+    <form id="myForm">
+      <input type="text" name="first" value="Lewis" /><br />
+      <input type="text" name="last" value="Hamilton" />
+      <input type="submit" value="Get data" />
+    </form>
+    <button id="clickMe">Click Here</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+      var myForm = document.getElementById("myForm");
+      myForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var url = "https://randomuser.me/api/?results=10";
+        var postUrl = "http://s179017901.onlinehome.us/discoveryvip/";
+        var first = document.querySelector('input[name="first"]').value;
+        var last = document.querySelector('input[name="last"]').value;
+        var myData = `first=${first}&last=${last}`;
+        //AXIOS POST
+        axios
+          .post(postUrl, myData)
+          .then(function (data) {
+            console.log(data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        //AXIOS GET
+        /*
+        axios
+          .get(url)
+          .then(function (data) {
+            var people = data.data.results;
+            var html = `<h2>Results</h2>`;
+            for (var x = 0; x < people.length; x++) {
+              html += `${people[x].name.first} ${people[x].name.last} <img src="${people[x].picture.thumbnail}"> <br />`;
+            }
+
+            document.querySelector("#output").innerHTML = html;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });*/
+      });
+    </script>
+  </body>
+</html>
