@@ -2,8 +2,45 @@
   "posts": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "first": "Lewis",
+      "last": "Hamilton",
+      "comapny": "MercedesAMG"
+    },
+    {
+      "id": 2
+    },
+    {
+      "first": "testFirst",
+      "last": "testLast",
+      "company": "testCompany",
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "first": "Charles",
+      "last": "Leclerc",
+      "company": "Ferrari",
+      "id": 5
+    },
+    {
+      "first": "Charles",
+      "last": "Leclerc",
+      "company": "Ferrari",
+      "id": 6
+    },
+    {
+      "first": "Charles",
+      "last": "Leclerc",
+      "company": "Ferrari",
+      "id": 7
+    },
+    {
+      "first": "Kevin",
+      "last": "Magnussen",
+      "company": "Haas",
+      "id": 8
     }
   ],
   "comments": [
@@ -11,9 +48,28 @@
       "id": 1,
       "body": "some comment",
       "postId": 1
+    },
+    {
+      "postId": "5",
+      "body": "",
+      "Always crashing": "",
+      "id": 2
+    },
+    {
+      "postId": "5",
+      "body": "always crashing",
+      "id": 3
+    },
+    {
+      "postId": "2",
+      "body": "test",
+      "id": 4
     }
   ],
   "profile": {
     "name": "typicode"
+  },
+  "test": {
+    "whatever": "Hello World"
   }
 }
