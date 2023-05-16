@@ -1,5 +1,7 @@
 //"https://docs.google.com/spreadsheets/d/1qyHYf8mnaUW4a-YcgOQCVCMN9msfcKp3P61WU20vcf4/edit?usp=sharing";
 
+//https://script.google.com/macros/s/AKfycbx0zmCjrD_TP2awNNmZMaJlolunTY5nE2jdboNiWVNILorpjxFg4ZMSc-37bWFh5ESqaQ/exec
+
 const output = document.querySelector(".output");
 const url = "https://docs.google.com/spreadsheets/d/";
 const ssid = "1qyHYf8mnaUW4a-YcgOQCVCMN9msfcKp3P61WU20vcf4";
