@@ -14,6 +14,16 @@
   <body>
     <h1>Learn AJAX JSON data from Google Sheets</h1>
     <button type="button" id="loadData">Load JSON</button>
+    <button type="button" id="fillData">Get Random User</button>
+    <form id="myForm">
+      <div>First Name:<input type="text" name="First" value="FirstName" /></div>
+      <br />
+      <div>Last Name:<input type="text" name="Last" value="LastName" /></div>
+      <br />
+      <div>Company:<input type="text" name="Company" value="Company" /></div>
+      <br />
+      <button type="submit" id="submit">Send Data to Google Sheeet</button>
+    </form>
     <div id="output"></div>
     <script
       src="https://code.jquery.com/jquery-3.7.0.min.js"
@@ -22,14 +32,44 @@
     ></script>
     <script>
       $(function () {
+        var url =
+          "https://script.google.com/macros/s/AKfycbw52ZMOak7dR3okOzicJ2D53ZmlEll_Yr1x4DEjQs384-yywhSp96TcipNJhpdJDZRXYg/exec";
+
+        $("#fillData").click(function () {
+          $.ajax({
+            url: "https://randomuser.me/api/",
+            dataType: "json",
+            success: function (data) {
+              console.log(data.results[0]);
+              var obj = data.results[0];
+              $('input[name="First"]').val(obj.name.first);
+              $('input[name="Last"]').val(obj.name.last);
+            },
+          });
+        });
+
+        $("#myForm").submit(function (e) {
+          e.preventDefault();
+          var myData = $("form#myForm :input").serialize();
+          /*var url =
+            "https://script.google.com/macros/s/AKfycbx0zmCjrD_TP2awNNmZMaJlolunTY5nE2jdboNiWVNILorpjxFg4ZMSc-37bWFh5ESqaQ/exec";*/
+          console.log(myData);
+          $.ajax({
+            url: url,
+            method: "POST",
+            data: myData,
+            success: function (data) {
+              console.log(data);
+            },
+          });
+        });
+
         $("#loadData").click(function () {
-          var url =
-            "https://script.google.com/macros/s/AKfycbx0zmCjrD_TP2awNNmZMaJlolunTY5nE2jdboNiWVNILorpjxFg4ZMSc-37bWFh5ESqaQ/exec";
+          /*var url =
+            "https://script.google.com/macros/s/AKfycbx0zmCjrD_TP2awNNmZMaJlolunTY5nE2jdboNiWVNILorpjxFg4ZMSc-37bWFh5ESqaQ/exec";*/
           $.getJSON(url, function (data) {
-            console.log(data);
             var html = `<h3>Google Sheet Data</h3>`;
             $.each(data, function (key, val) {
-              console.log(val);
               for (var x = 0; x < val.length; x++) {
                 html += val[x] + " ";
               }
