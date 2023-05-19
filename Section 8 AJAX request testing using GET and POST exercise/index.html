@@ -28,10 +28,30 @@
   <body>
     <h1>AJAX Tester</h1>
     <div>
-      URL:<input type="text" name="url" value="https://reqres.in/api/users/2"
+      URL:<input type="text" name="url" value="https://reqres.in/api/users/2" />
     </div>
+    <div>
+      <select id="resource">
+        <option value="JavaScript">JavaScript</option>
+        <option value="jQuery">jQuery</option>
+        <option value="Axios">Axios</option>
+        <option value="Fetch">Fetch</option>
+      </select>
+    </div>
+    <div>
+      <select id="method">
+        <option value="GET" selected>get</option>
+        <option value="POST">post</option>
+      </select>
+    </div>
+    <form id="myForm">
+      <input type="text" name="first" value="Yuki" />
+      <input type="text" name="last" value="Tsunonda" />
+    </form>
     <div><input type="button" name="sender" value="Make Request" /></div>
     <div class="" id="output"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function (event) {
         document
@@ -41,18 +61,104 @@
 
       function makeRequest() {
         var url = document.querySelector('input[name="url"]').value;
-        ajaxJS(url);
+        var resource = document.querySelector("#resource").value;
+        var method = document.querySelector("#method").value;
+        var temp = document.querySelector("#myForm");
+        var form = $("form").serialize();
+        switch (resource) {
+          case "jQuery":
+            ajaxJQ(url, method, form);
+            break;
+          case "Axios":
+            ajaxAX(url, method, form);
+            break;
+          case "Fetch":
+            ajaxFe(url, method, form);
+            break;
+          default:
+            ajaxJS(url, method, form);
+        }
       }
 
-      function ajaxJS(url) {
+      function ajaxFe(url, method, form) {
+        var para =
+          method == "POST"
+            ? {
+                method: method,
+                body: form,
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded",
+                },
+              }
+            : {};
+        fetch(url, para)
+          .then(function (response) {
+            return response.json();
+          })
+          .catch(function (error) {
+            return output(error, "0", "Fetch FAILED");
+          })
+          .then(function (response) {
+            return output(response, "200", "Fetch AJAX");
+          });
+      }
+
+      function ajaxAX(url, method, form) {
+        axios({
+          method: method,
+          url: url,
+          data: form,
+        })
+          .then(function (response) {
+            console.log(response);
+            output(response.data, response.status, "Axios response");
+          })
+          .catch(function (error) {
+            output(response.data, response.status, "Axios FAIL");
+          });
+      }
+
+      function ajaxJQ(url, method, form) {
+        $.ajax({
+          url: url,
+          type: method,
+          data: form,
+          success: function (data) {
+            console.log(data);
+          },
+        })
+          .done(function (response, textStatus, xhr) {
+            output(response, xhr.status, "jQuery response");
+          })
+          .fail(function (response, textStatus, xhr) {
+            output(response, xhr.status, "jQuery ERROR");
+          });
+      }
+
+      function ajaxJS(url, method, form) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            output(xhr.responseText, xhr.status, "JavaScript response");
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              output(xhr.responseText, xhr.status, "JavaScript response");
+            } else if (xhr.status == 201) {
+              output(xhr.responseText, xhr.status, "JavaScript Added");
+            } else {
+              output(xhr.responseText, xhr.status, "JavaScript Error");
+            }
           }
         };
-        xhr.open("GET", url, true);
-        xhr.send();
+        if (method == "GET") {
+          xhr.open("GET", url, true);
+          xhr.send();
+        } else {
+          xhr.open("POST", url, true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.send(form);
+        }
       }
 
       function output(responseText, status, xhr) {
