@@ -41,6 +41,17 @@
             output.innerHTML += `<div class="dataOutput">${holder}</div>`;
           }
         });
+        var url1 =
+          "https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyBrzFdtdJJlFfFa_ibfmQg6Hbghedm9lec&q=test&maxResults=4";
+        ajaxJS(url1, function (data) {
+          for (var x in data.items) {
+            console.log(data.items[x]);
+            var title = data.items[x].snippet.title;
+            var description = data.items[x].snippet.description;
+            var thumb = data.items[x].snippet.thumbnails.default.url;
+            output.innerHTML += `<div>${title}</br>${description}</br>${thumb}</div>`;
+          }
+        });
       }
 
       function ajaxJS(url, callback) {
