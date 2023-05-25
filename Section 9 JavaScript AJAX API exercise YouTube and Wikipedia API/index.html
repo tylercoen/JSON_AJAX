@@ -12,6 +12,34 @@
         padding: 10px;
         border: 1px solid #eee;
       }
+      .panel {
+        width: 25%;
+        display: inline-block;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .panel img {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .wrap {
+        width: 100%;
+        position: relative;
+      }
+      .panel .content {
+        width: 100%;
+        font-size: 0.8em;
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        position: absolute;
+        padding: 10px;
+        left: 0;
+        z-index: 100;
+      }
     </style>
   </head>
   <body>
@@ -41,15 +69,15 @@
             output.innerHTML += `<div class="dataOutput">${holder}</div>`;
           }
         });
-        var url1 =
-          "https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyBrzFdtdJJlFfFa_ibfmQg6Hbghedm9lec&q=test&maxResults=4";
+        var url1 = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyBrzFdtdJJlFfFa_ibfmQg6Hbghedm9lec&q=${searchTerm}&maxResults=4`;
         ajaxJS(url1, function (data) {
           for (var x in data.items) {
             console.log(data.items[x]);
             var title = data.items[x].snippet.title;
             var description = data.items[x].snippet.description;
             var thumb = data.items[x].snippet.thumbnails.default.url;
-            output.innerHTML += `<div>${title}</br>${description}</br>${thumb}</div>`;
+            var videoID = data.items[x].id.videoid;
+            output.innerHTML += `<div class="panel"><div class="wrap"><div class="content">${title}</div><a href="https://youtu,be/${videoID}"target="_blank"><img src="${thumb}" alt="${title}"</a></div></div>`;
           }
         });
       }
