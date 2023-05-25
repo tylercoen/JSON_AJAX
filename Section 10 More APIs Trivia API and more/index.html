@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>AJAX</title>
+  </head>
+
+  <body>
+    <h1>AJAX</h1>
+    <div>Score:<span id="score"></span></div>
+    <div class="" id="output"></div>
+    <button type="button" id="btn">Click Me</button>
+    <script>
+      var btn = document.getElementById("btn");
+      btn.addEventListener("click", nextItem);
+
+      function nextItem() {
+        var answers = { correct: 0, wrong: 0 };
+        var url = "https://opentdb.com/api.php?amount=1";
+        requestAJAX(url, function (data) {
+          console.log(data.results[0]);
+        });
+      }
+
+      function requestAJAX(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            callback(JSON.parse(xhr.responseText));
+          }
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
