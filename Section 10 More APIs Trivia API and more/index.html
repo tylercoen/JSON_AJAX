@@ -34,7 +34,9 @@
       btn.addEventListener("click", nextItem);
       var answers = { correct: 0, wrong: 0 };
       var output = document.getElementById("output");
+      var selAnswer = document.getElementById("selAnswers");
       function nextItem() {
+        btn.style.display = "none";
         var url = "https://opentdb.com/api.php?amount=1";
         var html = ``;
         requestAJAX(url, function (data) {
@@ -46,7 +48,7 @@
         });
       }
 
-      function correctAnswer() {
+      function correctAnswerIs() {
         var els = document.querySelectorAll("#selAnswers div");
         for (x = 0; x < els.length; x++) {
           if (els[x].getAttribute("data-cor") == "true") {
@@ -57,11 +59,14 @@
       }
       function sendAnswer() {
         var res = event.target.getAttribute("data-cor");
-        console.log(correctAnswer());
+        var correctAnswerValue = correctAnswerIs();
+        btn.style.display = "block";
         if (res == "true") {
           answers.correct++;
+          selAnswer.innerHTML = "Correct!!!";
         } else {
           answers.wrong++;
+          selAnswer.innerHTML = `Wrong! The correct answer was ${correctAnswerValue}`;
         }
         document.getElementById(
           "score"
@@ -72,7 +77,7 @@
         var holder = incor;
         holder.push(cor);
         holder.sort();
-        var selAnswer = document.getElementById("selAnswers");
+
         selAnswer.innerHTML = "";
         for (var x = 0; x < holder.length; x++) {
           var el = document.createElement("div");
