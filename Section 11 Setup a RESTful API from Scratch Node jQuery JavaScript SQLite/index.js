@@ -1,10 +1,18 @@
-const c = require("./hello.js");
-const a = 100;
-const b = "World";
+const http = require("http");
+const data = {
+  firstName: "Laurence",
+  lastName: "Svekis",
+};
 
-const d = require("./hello2.js");
-console.log(a + b);
-console.log(c);
-console.log(d);
+const site = http.createServer(function (req, res) {
+  console.log("Hello World");
+  console.log(req.headers);
+  console.log(req.url);
+  res.setHeader("Content-Type", "application/json");
+  //res.setHeader("Content-Type", "text/html");
+  //res.write(`<h1>Hello World 2</h1>`);
+  res.write(JSON.stringify(data));
+  res.end();
+});
 
-console.log(`${d.first} ${d.second}`);
+site.listen(3000);
