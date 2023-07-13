@@ -1,4 +1,4 @@
-const http = require("http");
+/*const http = require("http");
 const fs = require("fs");
 
 const site = http.createServer(function (req, res) {
@@ -11,4 +11,13 @@ const site = http.createServer(function (req, res) {
   });
 });
 
-site.listen(3000);
+site.listen(3000);*/
+
+var express = require("express");
+var app = express();
+
+app.get("/", function (req, res) {
+  res.send("Hellow World");
+});
+
+app.listen(3000);
