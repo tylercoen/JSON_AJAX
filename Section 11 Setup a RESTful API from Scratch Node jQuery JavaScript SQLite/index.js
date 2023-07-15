@@ -18,8 +18,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const data = { user: "admin", pass: "password" };
 
+console.log(__dirname);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + "/public"));
 
 /*app.use(function (req, res, next) {
   console.log(`I'm in the middle`);
@@ -28,23 +30,30 @@ app.use(bodyParser.json());
   next();
 });*/
 
-app.get("/", function (req, res) {
+app.get("/users", function (req, res) {
+  //see all users
   res.send("GET sent");
 });
 
-app.post("/login", function (req, res) {
-  if (data.user == req.body.user && data.pass == req.body.pass) {
-    res.write('{"status":"success"}');
-  }
+app.post("/users", function (req, res) {
+  //create and add user
   console.log(req.body.user);
   res.send();
 });
 
-app.put("/", function (req, res) {
-  res.send("PUT sent");
+app.get("/users/:id", function (req, res) {
+  //get user info by id
+  res.send();
 });
 
-app.delete("/", function (req, res) {
+app.put("/users/:id", function (req, res) {
+  //update user
+  console.log(req.params);
+  res.send(`PUT sent ${params.id}`);
+});
+
+app.delete("/users/:id", function (req, res) {
+  //delete user
   res.send("DELETE sent");
 });
 
