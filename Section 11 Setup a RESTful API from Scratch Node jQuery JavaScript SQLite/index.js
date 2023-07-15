@@ -16,7 +16,16 @@ site.listen(3000);*/
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const data = { user: "admin", pass: "password" };
+const data = {
+  users: [
+    { user: "admin", pass: "password", id: 1 },
+    {
+      user: "admin1",
+      pass: "password2",
+      id: 2,
+    },
+  ],
+};
 
 console.log(__dirname);
 app.use(bodyParser.urlencoded({ extended: false }));
