@@ -15,8 +15,11 @@
   </head>
   <body>
     <h1>Hello, world!</h1>
-    <input type="text" name="user" placeholder="User Name" />
-    <input type="text" name="pass" placeholder="Password" />
+    <form id="myform">
+      <input type="text" name="user" placeholder="User Name" />
+      <input type="text" name="pass" placeholder="Password" />
+    </form>
+
     <div class="btn">Click Me</div>
     <script
       src="https://code.jquery.com/jquery-3.7.0.js"
@@ -26,7 +29,11 @@
     <script>
       $(document).ready(function () {
         $(".btn").click(function () {
-          console.log("clicked");
+          var user = $(`input[name="user"]`).val();
+          var pass = $(`input[name="pass"]`).val();
+          $.post("/users", $("#myform").serialize()).done(function (data) {
+            console.log(data);
+          });
         });
       });
     </script>

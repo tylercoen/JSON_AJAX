@@ -46,13 +46,17 @@ app.get("/users", function (req, res) {
 
 app.post("/users", function (req, res) {
   //create and add user
-  console.log(req.body.user);
-  res.send();
+  req.body.id = data.users.length + 1;
+  data.users.push(req.body);
+  console.log(req.body);
+  console.log(data);
+  res.send("POST sent");
 });
 
 app.get("/users/:id", function (req, res) {
   //get user info by id
-  res.send();
+  console.log(req.params);
+  res.send("user by ID");
 });
 
 app.put("/users/:id", function (req, res) {
