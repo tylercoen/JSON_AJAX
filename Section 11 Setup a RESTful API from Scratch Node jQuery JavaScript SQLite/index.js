@@ -40,34 +40,51 @@ app.use(express.static(__dirname + "/public"));
 });*/
 
 app.get("/users", function (req, res) {
-  //see all users
-  res.send("GET sent");
+  res.json(data);
 });
 
 app.post("/users", function (req, res) {
-  //create and add user
   req.body.id = data.users.length + 1;
   data.users.push(req.body);
-  console.log(req.body);
-  console.log(data);
   res.send("POST sent");
 });
 
 app.get("/users/:id", function (req, res) {
-  //get user info by id
-  console.log(req.params);
-  res.send("user by ID");
+  res.send(getRow(req.params.id));
 });
 
 app.put("/users/:id", function (req, res) {
-  //update user
-  console.log(req.params);
-  res.send(`PUT sent ${params.id}`);
+  console.log(req.body);
+  req.body.id = req.params.id;
+  let temp = data.users.indexOf(getRow(req.params.id));
+  if (temp != -1) {
+    data.users[temp] = req.body;
+    res.write(`updated ${temp}`);
+  } else {
+    res.write("not found");
+  }
+  console.log(data);
+  res.send();
 });
 
 app.delete("/users/:id", function (req, res) {
   //delete user
-  res.send("DELETE sent");
+  let temp = data.users.indexOf(getRow(req.params.id));
+  if (temp != -1) {
+    data.users.splice(temp, 1);
+    res.write(`deleted ${temp}`);
+  } else {
+    res.write("not found");
+  }
+  console.log(data);
+  res.send();
 });
 
 app.listen(3000);
+
+function getRow(id) {
+  for (let item of data.users) {
+    if (item.id == id) return item;
+  }
+  return false;
+}
