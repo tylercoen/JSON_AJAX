@@ -12,11 +12,13 @@
         padding: 5px;
         display: inline-block;
       }
+
       .editBtn {
         display: none;
       }
     </style>
   </head>
+
   <body>
     <h1>Hello, world!</h1>
     <ul id="usersList"></ul>
@@ -25,22 +27,17 @@
       <input type="text" name="pass" placeholder="Password" />
       <input type="text" name="id" placeholder="id" />
     </form>
-
     <div class="btn">Click Me</div>
     <div class="editBtn">Save</div>
-    <script
-      src="https://code.jquery.com/jquery-3.7.0.js"
-      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
       $(document).ready(function () {
         buildPage();
       });
-      $(`#usersList`).on("click", ".remove", function () {
+      $("#usersList").on("click", ".remove", function () {
         var id = $(this).parent().data("user").id;
         $.ajax({
-          url: `/users/${id}`,
+          url: "/users/" + id,
           type: "DELETE",
           success: function (rep) {
             console.log(rep);
@@ -48,19 +45,19 @@
           },
         });
       });
-      $(`#usersList`).on("click", ".edit", function () {
+      $("#usersList").on("click", ".edit", function () {
         var user = $(this).parent().data("user");
         $('input[name="id"]').val(user.id);
-        $(`input[name="user"]`).val(user.user);
-        $(`input[name="pass"]`).val(user.pass);
+        $('input[name="user"]').val(user.user);
+        $('input[name="pass"]').val(user.pass);
         $(".editBtn").show();
       });
       $(".editBtn").click(function () {
         var id = $('input[name="id"]').val();
         $.ajax({
-          url: `/users/${id}`,
+          url: "/users/" + id,
           type: "PUT",
-          data: $("#myForm").serialize(),
+          data: $("#myform").serialize(),
           success: function (rep) {
             console.log(rep);
             buildPage();
@@ -70,21 +67,30 @@
         $('input[name="id"]').val("");
       });
       $(".btn").click(function () {
-        var user = $(`input[name="user"]`).val();
-        var pass = $(`input[name="pass"]`).val();
+        var user = $('input[name="user"]').val();
+        var pass = $('input[name="pass"]').val();
         $.post("/users", $("#myform").serialize()).done(function (data) {
           console.log(data);
           buildPage();
         });
       });
-      function buildPage() {
-        $("#usersList").html("");
-        $.getJSON(`/users`, function (data) {
-          $.each(data.users, function (i, value) {
-            var hLink = `<a href="/users/${value.id}" target="_blank">${value.id}</a>`;
 
+      function buildPage() {
+        $("#usersList").html(" ");
+        $.getJSON("/users", function (data) {
+          $.each(data.users, function (i, value) {
+            var hLink =
+              '<a href="/users/' +
+              value.id +
+              '" target="_blank">' +
+              value.id +
+              "</a>";
             var listNew = $(
-              `<li>${value.user} ${hLink} <span class="remove">x</span><span class="edit">edit</span></li>`
+              "<li>" +
+                value.user +
+                " " +
+                hLink +
+                ' <span class="remove">x</span> <span class="edit">edit</span></li>'
             );
             listNew.data("user", value);
 
