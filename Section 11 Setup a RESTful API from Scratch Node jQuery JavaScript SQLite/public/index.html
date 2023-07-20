@@ -29,21 +29,42 @@
     ></script>
     <script>
       $(document).ready(function () {
+        buildPage();
+      });
+      $(`#usersList`).on("click", ".remove", function () {
+        var id = $(this).parent().data("id");
+        $.ajax({
+          url: `/users/${id}`,
+          type: "DELETE",
+          success: function (rep) {
+            console.log(rep);
+            buildPage();
+          },
+        });
+      });
+      $(".btn").click(function () {
+        var user = $(`input[name="user"]`).val();
+        var pass = $(`input[name="pass"]`).val();
+        $.post("/users", $("#myform").serialize()).done(function (data) {
+          console.log(data);
+          buildPage();
+        });
+      });
+      function buildPage() {
+        $("#usersList").html("");
         $.getJSON(`/users`, function (data) {
           $.each(data.users, function (i, value) {
-            var listNew = $(`<li>${value.user} ${value.pass} ${value.id}</li>`);
+            var hLink = `<a href="/users/${value.id}" target="_blank">${value.id}</a>`;
+
+            var listNew = $(
+              `<li>${value.user} ${hLink} <span class="remove">x</span></li>`
+            );
+            listNew.data("id", value.id);
             $("#usersList").append(listNew);
             console.log(value);
           });
         });
-        $(".btn").click(function () {
-          var user = $(`input[name="user"]`).val();
-          var pass = $(`input[name="pass"]`).val();
-          $.post("/users", $("#myform").serialize()).done(function (data) {
-            console.log(data);
-          });
-        });
-      });
+      }
     </script>
   </body>
 </html>
