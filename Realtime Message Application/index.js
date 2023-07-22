@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.post("/comment", function (req, res) {
-  console.log(req.body);
   var newMessage = {
     name: req.body.name,
     message: req.body.message,
