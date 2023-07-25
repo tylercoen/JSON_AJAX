@@ -3,7 +3,7 @@
   <title>Realtime Messages with Pusher</title>
   <style>
     body {
-      background-color: #0d1b2a;
+      background-color: #55789e;
     }
 
     h1 {
@@ -12,7 +12,7 @@
     }
 
     div.messages {
-      background-color: #778da9;
+      background-color: whitesmoke;
       padding: 10px;
     }
 
@@ -45,43 +45,50 @@
     </form>
   </div>
 
-  <div class="messages"></div>
+  <div id="messages"></div>
   <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
   <script>
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    (function () {
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
 
-    var pusher = new Pusher("08b1d4ea43d9060f06bb", {
-      cluster: "mt1",
-      encrypted: true,
-    });
+      var pusher = new Pusher("08b1d4ea43d9060f06bb", {
+        cluster: "mt1",
+        encrypted: true,
+      });
 
-    var channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", newComments);
+      var channel = pusher.subscribe("my-channel");
+      var messages = document.getElementById("messages");
+      channel.bind("my-event", newComments);
+      document
+        .querySelector("#mesSender")
+        .addEventListener("submit", addComment);
 
-    function newComments(data) {
-      console.log(data);
-    }
+      function newComments(data) {
+        console.log(data);
+        var el = document.createElement("div");
+        el.innerHTML = `${data.message} <small>${data.name}</small>`;
+        messages.appendChild(el);
+      }
 
-    document.querySelector("#mesSender").addEventListener("submit", addComment);
+      function addComment(event) {
+        event.preventDefault();
+        var newComment = {
+          name: document.getElementById("userName").value,
+          message: document.getElementById("newMessage").value,
+        };
+        console.log(newComment);
 
-    function addComment(event) {
-      event.preventDefault();
-      var newComment = {
-        name: document.getElementById("userName").value,
-        message: document.getElementById("newMessage").value,
-      };
-      console.log(newComment);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/comment", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState != 4 || xhr.status != 200) return;
+          console.log(xhr.responseText);
+        };
 
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/comment", true);
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4 || xhr.status != 200) return;
-        console.log(xhr.responseText);
-      };
-
-      xhr.send(JSON.stringify(newComment));
-    }
+        xhr.send(JSON.stringify(newComment));
+      }
+    })();
   </script>
 </body>
