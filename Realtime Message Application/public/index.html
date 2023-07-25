@@ -1,6 +1,51 @@
 <!DOCTYPE html>
 <head>
-  <title>Pusher Test</title>
+  <title>Realtime Messages with Pusher</title>
+  <style>
+    body {
+      background-color: #0d1b2a;
+    }
+
+    h1 {
+      color: #e0e1dd;
+      font-size: 24px;
+    }
+
+    div.messages {
+      background-color: #778da9;
+      padding: 10px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e1dd;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #415a77;
+      color: #e0e1dd;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Realtime Messages with Pusher</h1>
+  <div class="">
+    <form id="mesSender">
+      <input type="text" id="userName" placeholder="Your Name" required />
+      <br />
+      <textarea id="newMessage" rows="4" placeholder="Enter Message"></textarea>
+      <br />
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <div class="messages"></div>
   <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
   <script>
     // Enable pusher logging - don't include this in production
@@ -16,11 +61,4 @@
       console.log(data);
     });
   </script>
-</head>
-<body>
-  <h1>Pusher Test</h1>
-  <p>
-    Try publishing an event to channel <code>my-channel</code> with event name
-    <code>my-event</code>.
-  </p>
 </body>
