@@ -6,5 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie-edge" />
     <title>Crypto Currency Prices</title>
   </head>
-  <body></body>
+  <body>
+    <button id="allRates">See All</button>
+    <ul id="output"></ul>
+
+    <script>
+      var url = `https://discoveryvip.com/shared/json.php?f=coin`;
+      var allRates = document.querySelector("#allRates");
+      allRates.addEventListener("click", getAllRates);
+      function getAllRates() {
+        fetch(url)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+          })
+          .catch(function (error) {
+            console.log(JSON.stringify(error));
+          });
+      }
+    </script>
+  </body>
 </html>
