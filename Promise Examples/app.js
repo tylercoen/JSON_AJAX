@@ -2,8 +2,26 @@ const btn = document.createElement("button");
 btn.textContent = "press me";
 document.body.appendChild(btn);
 btn.addEventListener("click", function () {
-  fetchData("https://swapi.dev/api/planets");
+  fetchAll("https://swapi.dev/api/planets", []).then(function (planets) {
+    outputPlanets(planets);
+  });
 });
+
+function fetchAll(url, planets) {
+  return new Promise(function (resolve, reject) {
+    return fetch(url)
+      .then(function (rep) {
+        return rep.json();
+      })
+      .then(function (data) {
+        planets = data.results.map(function (item) {
+          console.log(item);
+          return { name: item.name, films: item.films };
+        });
+        resolve(planets);
+      });
+  });
+}
 const output = document.createElement("div");
 document.body.appendChild(output);
 
