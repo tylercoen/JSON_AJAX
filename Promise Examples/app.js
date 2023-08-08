@@ -14,11 +14,20 @@ function fetchAll(url, planets) {
         return rep.json();
       })
       .then(function (data) {
-        planets = data.results.map(function (item) {
-          console.log(item);
-          return { name: item.name, films: item.films };
-        });
-        resolve(planets);
+        planets = planets.concat(data.results);
+        console.log(planets);
+        if (data.next) {
+          console.log("next url" + data.next);
+          fetchAll(data.next, planets).then(resolve);
+        } else {
+          let arr = planets.map(function (item) {
+            return {
+              name: item.name,
+              films: item.films,
+            };
+          });
+          resolve(arr);
+        }
       });
   });
 }
