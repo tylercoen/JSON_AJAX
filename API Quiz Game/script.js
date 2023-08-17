@@ -4,13 +4,12 @@ const output = document.querySelector(".que");
 const nx = document.querySelector(".next");
 
 nx.addEventListener("click", createQuestion);
-const url = "https://docs.google.com/spreadsheets/d/";
-const ssid = "1L570az-aPFtGylkcLCG_BGv9JygI4qPi4t3CJPZDONs";
-const query1 = `/gviz/tq?`;
-const endpoint1 = `${url}${ssid}${query1}`; //might need format=json at the end
-fetch(endpoint1)
+const url =
+  "https://script.google.com/macros/s/AKfycbxp36V9dy6XTqqDXA5WqPBNZ_17Pu9xLhqCCgstbInF9CSudSffparX6OcNSKhYwLBl/exec";
+
+fetch(url)
   .then(function (res) {
-    return res;
+    return res.json();
   })
   .then(function (data) {
     console.log(data.data);
@@ -32,11 +31,11 @@ function createQuestion() {
   } else {
     message.textContent = `Question # ${game.val + 1} out of ${game.total}`;
     output.innerHTML = "";
-    console.log(game);
     let q = game.arr[game.val];
-    console.log(q);
+    console.log(q.question);
     const main = document.createElement("div");
     main.textContent = q.question;
+    main.classList.add("question");
     output.appendChild(main);
     arrayRandom(q.opt);
     q.opt.forEach(function (el) {
@@ -44,6 +43,7 @@ function createQuestion() {
       let span = document.createElement("span");
       span.textContent = el;
       span.classList.add("answer");
+      span.classList.add("btn");
       output.appendChild(span);
       span.ans = q.answer;
       span.addEventListener("click", checker);
